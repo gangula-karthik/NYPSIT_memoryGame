@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Leaderboard</title>
+</head>
+
+<body>
+    <h1>Memory Game</h1>
+    <form id="playerForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="adminNo">Admin No:</label><br>
+        <input type="text" id="adminNo" name="adminNo" required><br>
+        <a href="javascript:;" data-level="8" class="play"><input type="submit" value="Start Game" id="startButton" disabled></a>
+    </form>
+
+    <h2>Leaderboard</h2>
+    <table id="leaderboard">
+        <tr>
+            <th>Name</th>
+            <th>Admin No</th>
+            <th>Time</th>
+        </tr>
+        <!-- leaderboard rows go here -->
+    </table>
+
+    <script>
+        // get form and button elements
+        const form = document.getElementById('playerForm');
+        const button = document.getElementById('startButton');
+
+        // add input event listener to form to enable button when both fields have values
+        form.addEventListener('input', () => {
+            const name = document.getElementById('name').value;
+            const adminNo = document.getElementById('adminNo').value;
+
+            button.disabled = !name || !adminNo;
+        });
+
+        // add submit event listener to form to add row to leaderboard
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const adminNo = document.getElementById('adminNo').value;
+            const time = '00:00:00'; // replace with actual game time
+
+            const leaderboard = document.getElementById('leaderboard');
+            const row = leaderboard.insertRow(-1);
+
+            const nameCell = row.insertCell(0);
+            const adminNoCell = row.insertCell(1);
+            const timeCell = row.insertCell(2);
+
+            nameCell.innerHTML = name;
+            adminNoCell.innerHTML = adminNo;
+            timeCell.innerHTML = time;
+
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    adminNo: adminNo,
+                    time: time,
+                }),
+            });
+
+            form.reset();
+            button.disabled = true;
+        });
+    </script>
+</body>
+
+</html>

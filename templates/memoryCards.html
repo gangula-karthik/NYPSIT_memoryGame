@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>memory cards</title>
+</head>
+
+<style>
+    .card{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+    }
+    .game-board{
+        text-align: center;
+    }
+</style>
+<body>
+    <div id="game-board">
+        {% for card in cards %}
+        <div class="card" data-text="{{ card.text }}">
+            <img src="{{ card.img_url }}" alt="{{ card.text }}">
+            <p>{{ card.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
