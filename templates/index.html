@@ -12,7 +12,7 @@
         <input type="text" id="name" name="name" required><br>
         <label for="adminNo">Admin No:</label><br>
         <input type="text" id="adminNo" name="adminNo" required><br>
-        <a href="javascript:;" data-level="8" class="play"><input type="submit" value="Start Game" id="startButton" disabled></a>
+        <input type="submit" value="Start Game" id="startButton" href="{{ url_for('game') }}" disabled>
     </form>
 
     <h2>Leaderboard</h2>

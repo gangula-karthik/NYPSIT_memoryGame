@@ -8,18 +8,32 @@
 </head>
 
 <style>
-    .card{
-        width: 200px;
-        height: 200px;
-        border: 1px solid black;
-        display: inline-block;
-        margin: 10px;
-        text-align: center;
-    }
-    .game-board{
-        text-align: center;
-    }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f3f3; /* any color you like */
+    margin: 0;
+    padding: 0;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 80vw;
+}
+
+.card {
+    background-color: #ddd; /* any color you like */
+    height: 0;
+    padding-top: 100%; /* keep the aspect ratio to 1:1 */
+    position: relative; 
+}
+
 </style>
+
 <body>
     <div id="game-board">
         {% for card in cards %}
