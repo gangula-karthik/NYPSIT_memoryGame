@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import csv
 import json
+import random
 
 app = Flask(__name__)
 
@@ -8,11 +9,14 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+
 @app.route('/game')
 def game():
     with open('cards.json') as f:
         cards = json.load(f)
+    random.shuffle(cards)  # This shuffles the list of cards in-place
     return render_template('memoryCards.html', cards=cards)
+
 
 @app.route('/save', methods=['POST'])
 def save():
