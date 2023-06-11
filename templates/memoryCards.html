@@ -27,10 +27,8 @@
         /* Your existing styles here */
         perspective: 1000px; /* This gives the flip a 3D effect */
         cursor: pointer;
-        border: 1px solid black;
-        border-radius: 5px;
-        height: 12em;
         position: relative;
+        height: 12em;
     }
 
     .card-inner {
@@ -49,10 +47,18 @@
         backface-visibility: hidden; /* Hide the side facing away from the viewer */
     }
 
+    .card-back{
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+
 
     .card-front {
         transform: rotateY(180deg); /* Rotate the front of the card so it starts out hidden */
         /* Style the front of the card here */
+        border: 1px solid black;
+        border-radius: 5px;
+        height: 12em;
     }
 
     .card.flipped .card-inner {
@@ -60,7 +66,7 @@
     }
 
     .card.matched {
-        background-color: rgb(0, 255, 0); /* Or whatever style you want for matched cards */
+        background-color: rgb(0, 200, 0); /* Or whatever style you want for matched cards */
         cursor: default;
     }
 
@@ -97,57 +103,73 @@
         }
 
 
-        let selectedCards = [];
+        let timeRemaining = 60; // Time remaining in seconds
+let gameEnded = false; // Flag to keep track of game state
 
-        function flipCard(card) {
-            if (card.classList.contains('matched') || selectedCards.length >= 2) {
-                return;
+function endGame(message) {
+    gameEnded = true;
+    alert(message);
+    clearInterval(timerInterval); // Stop the timer
+}
+
+let timerInterval = setInterval(() => {
+    timeRemaining--;
+
+    // Display the time remaining
+    document.getElementById('timer').textContent = `Time remaining: ${timeRemaining} seconds`;
+
+    // Check if the time is up
+    if (timeRemaining <= 0) {
+        endGame('Time is up!');
+    }
+}, 1000);
+
+let selectedCards = [];
+
+function flipCard(card) {
+    if (gameEnded || card.classList.contains('matched') || selectedCards.length >= 2) {
+        // Don't allow flipping a matched card or flipping more than two cards at once, or if game has ended
+        return;
+    }
+
+    card.classList.toggle('flipped');
+
+    if (card.classList.contains('flipped')) {
+        selectedCards.push(card);
+    } else {
+        selectedCards = selectedCards.filter(c => c !== card);
+    }
+
+    if (selectedCards.length === 2) {
+        // Check for a match
+        const match1 = selectedCards[0].getAttribute('data-match');
+        const match2 = selectedCards[1].getAttribute('data-match');
+
+        if (match1 === match2) {
+            // It's a match
+            selectedCards.forEach(c => {
+                c.classList.add('matched');
+                c.classList.remove('flipped');
+            });
+            selectedCards = []; // Clear the selectedCards array
+
+            // Check if all cards are matched
+            const allCards = document.querySelectorAll('.card');
+            if (Array.from(allCards).every(card => card.classList.contains('matched'))) {
+                endGame('Congratulations! You have matched all cards.');
             }
 
-            card.classList.toggle('flipped');
-
-            if (card.classList.contains('flipped')) {
-                selectedCards.push(card);
-            } else {
-                selectedCards = selectedCards.filter(c => c !== card);
-            }
-
-            if (selectedCards.length === 2) {
-                const match1 = selectedCards[0].getAttribute('data-match');
-                const match2 = selectedCards[1].getAttribute('data-match');
-
-                if (match1 === match2) {
-                    selectedCards.forEach(c => {
-                        c.classList.add('matched');
-                        c.classList.remove('flipped');
-                    });
-                    selectedCards = [];
-                } else {
-                    setTimeout(() => {
-                        selectedCards.forEach(c => {
-                            c.classList.remove('flipped');
-                        });
-                        selectedCards = [];
-                    }, 1000);
-                }
-            }
+        } else {
+            // It's not a match
+            setTimeout(() => {
+                selectedCards.forEach(c => {
+                    c.classList.remove('flipped');
+                });
+                selectedCards = []; // Clear the selectedCards array
+            }, 1000);
         }
-
-        let timeRemaining = 60; 
-
-
-        let timerInterval = setInterval(() => {
-            timeRemaining--;
-
-            document.getElementById('timer').textContent = `Time remaining: ${timeRemaining} seconds`;
-
-
-            if (timeRemaining <= 0) {
-                clearInterval(timerInterval); 
-                alert('Time is up!');
-            }
-        }, 1000);
-
+    }
+}
 
 
     </script>
