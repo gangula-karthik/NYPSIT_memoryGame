@@ -8,38 +8,28 @@
 </head>
 
 <style>
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f3f3f3; /* any color you like */
-    margin: 0;
-    padding: 0;
-}
+    #game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px; /* Adjust this to add space between cards */
+        padding-top: 10px;
+    }
 
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    width: 80vw;
-}
-
-.card {
-    background-color: #ddd; /* any color you like */
-    height: 0;
-    padding-top: 100%; /* keep the aspect ratio to 1:1 */
-    position: relative; 
-}
+    .card {
+        border: 1px solid black;
+        border-radius: 5px;
+        height: 12em;
+    }
 
 </style>
 
 <body>
     <div id="game-board">
         {% for card in cards %}
-        <div class="card" data-text="{{ card.text }}">
-            <img src="{{ card.img_url }}" alt="{{ card.text }}">
-            <p>{{ card.text }}</p>
+        <div class="card" data-text="{{ card.title }}">
+            <img src="{{ card.image }}" alt="{{ card.title }}">
+            <p>{{ card.title }}</p>
         </div>
         {% endfor %}
     </div>
