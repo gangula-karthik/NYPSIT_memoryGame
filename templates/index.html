@@ -7,13 +7,6 @@
 
 <body>
     <h1>Memory Game</h1>
-    <form id="playerForm">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
-        <label for="adminNo">Admin No:</label><br>
-        <input type="text" id="adminNo" name="adminNo" required><br>
-        <input type="submit" value="Start Game" id="startButton" href="{{ url_for('game') }}" disabled>
-    </form>
 
     <h2>Leaderboard</h2>
     <table id="leaderboard">
@@ -23,7 +16,10 @@
             <th>Time</th>
         </tr>
         <!-- leaderboard rows go here -->
+
     </table>
+
+    <a href="{{ url_for('myGame') }}">Hi</a>
 
     <script>
         // get form and button elements
@@ -72,6 +68,8 @@
             form.reset();
             button.disabled = true;
         });
+
+        
     </script>
 </body>
 
