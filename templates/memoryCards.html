@@ -104,7 +104,7 @@
         }
 
 
-        let timeRemaining = 60; // Time remaining in seconds
+        let timeRemaining = 120; // Time remaining in seconds
     let gameEnded = false; // Flag to keep track of game state
 
     function endGame(message, successful) {
@@ -112,26 +112,36 @@
         alert(message);
         clearInterval(timerInterval); // Stop the timer
 
-        if (successful) {
-            // Send the time to the server
-            const timeTaken = 60 - timeRemaining;
-            fetch('/record-time', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    timeTaken: timeTaken
-                }),
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch((error) => console.error('Error:', error));
-        } else {
-            // Redirect to the homepage
-            window.location.href = '/';
-        }
+    if (successful) {
+        // Prompt for the username and admin number
+        const username = window.prompt("Please enter your username");
+        const adminNumber = window.prompt("Please enter your admin number");
+
+        // Send the time to the server
+        const timeTaken = 120 - timeRemaining;
+        fetch('/record-time', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: username,
+                adminNumber: adminNumber,
+                score: timeTaken
+            }),
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch((error) => console.error('Error:', error));
+
+        // Redirect to the leaderboard
+        window.location.href = '/';
+    } else {
+        // Redirect to the homepage
+        window.location.href = '/';
     }
+}
+
 
 
     let timerInterval = setInterval(() => {
@@ -154,49 +164,51 @@
     let selectedCards = [];
 
     function flipCard(card) {
-        if (gameEnded || card.classList.contains('matched') || selectedCards.length >= 2) {
-            // Don't allow flipping a matched card or flipping more than two cards at once, or if game has ended
-            return;
-        }
+    const allCards = document.querySelectorAll('.card');
+    
+    if (gameEnded || card.classList.contains('matched') || selectedCards.length >= 2) {
+        // Don't allow flipping a matched card or flipping more than two cards at once, or if game has ended
+        return;
+    }
 
-        card.classList.toggle('flipped');
+    card.classList.toggle('flipped');
 
-        if (card.classList.contains('flipped')) {
-            selectedCards.push(card);
+    if (card.classList.contains('flipped')) {
+        selectedCards.push(card);
+    } else {
+        selectedCards = selectedCards.filter(c => c !== card);
+    }
+
+    if (selectedCards.length === 2) {
+        // Check for a match
+        const match1 = selectedCards[0].getAttribute('data-match');
+        const match2 = selectedCards[1].getAttribute('data-match');
+
+        if (match1 === match2) {
+            // It's a match
+            selectedCards.forEach(c => {
+                c.classList.add('matched');
+                c.classList.remove('flipped');
+            });
+            selectedCards = []; // Clear the selectedCards array
+
+            // Check if all cards are matched
+            if (Array.from(allCards).every(card => card.classList.contains('matched'))) {
+                endGame('Congratulations! You have matched all cards.', true);
+            }
+
         } else {
-            selectedCards = selectedCards.filter(c => c !== card);
-        }
-
-        if (selectedCards.length === 2) {
-            // Check for a match
-            const match1 = selectedCards[0].getAttribute('data-match');
-            const match2 = selectedCards[1].getAttribute('data-match');
-
-            if (match1 === match2) {
-                // It's a match
+            // It's not a match
+            setTimeout(() => {
                 selectedCards.forEach(c => {
-                    c.classList.add('matched');
-                    c.classList.remove('flipped');
-                });
-                selectedCards = []; // Clear the selectedCards array
-
-                // Check if all cards are matched
-                const allCards = document.querySelectorAll('.card');
-                if (Array.from(allCards).every(card => card.classList.contains('matched'))) {
-                    endGame('Congratulations! You have matched all cards.');
-                }
-
-            } else {
-                // It's not a match
-                setTimeout(() => {
-                    selectedCards.forEach(c => {
                         c.classList.remove('flipped');
                     });
-                    selectedCards = []; // Clear the selectedCards array
-                }, 1000);
-            }
+                selectedCards = []; // Clear the selectedCards array
+            }, 1000);
         }
     }
+}
+
 
 
     </script>
