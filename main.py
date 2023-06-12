@@ -8,18 +8,16 @@ app = Flask(__name__)
 
 name = None
 
-db = shelve.open('leaderboard', writeback=True)
-
 @app.route('/')
 def home():
-    return render_template('index.html')
-
-@app.route('/get-leaderboard', methods=['GET'])
-def get_leaderboard():
-    with shelve.open('leaderboard') as db:
-        leaderboard = [value for value in db.values()]
-
-    return jsonify(leaderboard)
+    with open('Leaderboard.csv') as f:
+        reader = csv.reader(f)
+        res = []
+        for i in list(reader): 
+            res.append(i)
+            res[-1][-1] = int(res[-1][-1])
+        res = sorted(res, key=lambda x: x[-1], reverse=True)
+    return render_template('index.html', leaderboard=res)
 
 
 
@@ -27,7 +25,7 @@ def get_leaderboard():
 def myGame():
     with open('cards.json') as f:
         cards = json.load(f)
-    random.shuffle(cards)  # This shuffles the list of cards in-place
+    random.shuffle(cards)
     return render_template('memoryCards.html', cards=cards)
 
 
@@ -35,20 +33,17 @@ def myGame():
 def save():
     data = request.get_json()
 
-    with shelve.open('leaderboard'  ) as db:
-        db[data['adminNo']] = {'name': data['name'], 'adminNo': data['adminNo']}
-
-    return '', 204  # No content
+    return '', 204 
 
 @app.route('/record-time', methods=['POST'])
 def record_time():
     data = request.get_json()
     time_taken = data['timeTaken']
 
-    with shelve.open('leaderboard') as db:
-        for key in db:
-            if key == data['adminNo']:
-                db[key]['time'] = time_taken
+    # with shelve.open('leaderboard') as db:
+    #     for key in db:
+    #         if key == data['adminNo']:
+    #             db[key]['time'] = time_taken
 
     return {'message': 'Time recorded successfully'}
 
