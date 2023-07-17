@@ -7,47 +7,46 @@
 
 <div id="tiles"></div>
 
-<li class="list-group-item bg-transparent text-white">Player 1: 1000 points</li>
+<h1 class="centered container py-5 mt-5 d-flex justify-content-center align-items-center" id="title">The Sustainability Memory Game 🗑️</h1>
 
-
-<div class="centered container py-5 mt-5">
-  <h1 id="title">The Sustainability Memory Game</h1>
-  <div class="card glass mb-3 mt-5">
-      <div class="card-header">
-          <h2 class="text-center text-white">Leaderboard</h2>
-      </div>
-      <div id="leaderboard-styling" class="card-body">
-          <input type="text" id="username" class="form-control mb-3" placeholder="Search by username">
-          <table id="leaderboard" class="table table-dark table-striped">
-              <thead>
-                  <tr>
-                      <th>Name</th>
-                      <th>Admin No</th>
-                      <th>Time</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for row in leaderboard %}
-                  <tr data-username="{{ row[0] }}"></trdata-username>
-                      <td>{{ row[0] }}</td>
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                  </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-      </div>
-      <div class="text-center card-footer">
-          <a type="button" class="btn btn-primary" href="{{ url_for('myGame') }}">Start Game</a>
-      </div>
+<div class="centered container py-5 mt-5 d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card glass mb-3 mt-5">
+        <div class="card-header">
+            <h2 class="text-center text-white">Leaderboard 🏆</h2>
+        </div>
+        <div id="leaderboard-styling" class="card-body" style="max-height: 350px; overflow-y: auto;">
+            <input type="text" id="username" class="form-control mb-3" placeholder="Search by username">
+            <table id="leaderboard" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admin No</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in leaderboard %}
+                    <tr data-username="{{ row[0] }}">
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center card-footer">
+            <a type="button" class="btn btn-primary" href="{{ url_for('myGame') }}">Start Game</a>
+        </div>
+    </div>
   </div>
-</div>
+  
 
 
 
 
 <a id="yt-link" class="meta-link" target="_blank">
-  <span>Created with ❤️ by <strong>NYP SIT club</strong></span>
+  <span>Created by <strong>NYP SIT club</strong></span>
 </a>
 
 
