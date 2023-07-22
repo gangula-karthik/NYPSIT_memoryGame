@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='game-styles.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
     <title>memory cards</title>
 </head>
 
@@ -19,8 +23,7 @@
                     <h1 style="font-size: 75px;text-align: center;">🇸🇬</h1>
                 </div>
                 <div class="card-front">
-                    <img src="{{ card.image }}" alt="{{ card.title }}">
-                    <p>{{ card.title }}</p>
+                    <img src="{{ url_for('static', filename=card.image) }}" alt="{{ card.title }}">
                 </div>
             </div>
         </div>

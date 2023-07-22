@@ -21,7 +21,7 @@ def home():
 
 
 
-@app.route('/game')
+@app.route('/game', methods=['GET', 'POST'])
 def myGame():
     with open('cards.json') as f:
         cards = json.load(f)

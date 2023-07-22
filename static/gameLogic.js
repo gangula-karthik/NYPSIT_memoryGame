@@ -7,7 +7,7 @@ function revealCard(card) {
 }
 
 
-let timeRemaining = 60; // Time remaining in seconds
+let timeRemaining = 61; // Time remaining in seconds
 let gameEnded = false; // Flag to keep track of game state
 
 function endGame(message, successful) {
@@ -21,7 +21,7 @@ const username = window.prompt("Please enter your username");
 const adminNumber = window.prompt("Please enter your admin number");
 
 // Send the time to the server
-const timeTaken = 60 - timeRemaining;
+const timeTaken = 61 - timeRemaining;
 fetch('/record-time', {
     method: 'POST',
     headers: {
@@ -112,3 +112,12 @@ if (match1 === match2) {
 }
 }
 
+window.onload = function() {
+    anime({
+        targets: '.card',
+        scale: [0.5, 1],
+        opacity: [0, 1],
+        delay: anime.stagger(70),
+        easing: 'easeOutElastic(1, .5)'
+    });
+};
