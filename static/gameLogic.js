@@ -33,6 +33,7 @@ function endGame(message, successful) {
                 score: timeTaken
             }),
         })
+
             .then(response => response.json())
             .then(data => console.log(data))
             .catch((error) => console.error('Error:', error));
@@ -113,12 +114,12 @@ function flipCard(card) {
     }
 }
 
-    window.onload = function () {
-        anime({
-            targets: '.card',
-            scale: [0.5, 1],
-            opacity: [0, 1],
-            delay: anime.stagger(70),
-            easing: 'easeOutElastic(1, .5)'
-        });
-    };
+window.onload = function () {
+    anime({
+        targets: '.card',
+        scale: [0.5, 1],
+        opacity: [0, 1],
+        delay: anime.stagger(70),
+        easing: 'easeOutElastic(1, .5)'
+    });
+};
