@@ -2,22 +2,26 @@ from flask import Flask, request, render_template, jsonify
 import csv
 import json
 import random
-import shelve
+from supabase import create_client, Client
+from flask import Flask, request
+import os
 
 app = Flask(__name__)
 
-name = None
+# Initialize Supabase client
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
+
+
 
 @app.route('/')
 def home():
-    with open('Leaderboard.csv') as f:
-        reader = csv.reader(f)
-        res = []
-        for i in list(reader): 
-            res.append(i)
-            res[-1][-1] = int(res[-1][-1])
-        res = sorted(res, key=lambda x: x[-1], reverse=False)
+    leaderboard = supabase.table('Leaderboard').select().order('score').execute()
+    res = leaderboard['data']
     return render_template('index.html', leaderboard=res)
+
+
 
 
 
@@ -33,11 +37,16 @@ def myGame():
 def save():
     data = request.get_json()
     if int(data["score"]) > 0: 
-        with open('Leaderboard.csv', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow([data['name'], data['adminNumber'], int(data['score'])])
+        # Insert data into Supabase
+        insert_data = {
+            "name": data['name'],
+            "adminNumber": data['adminNumber'],
+            "score": int(data['score'])
+        }
+        supabase.table("Leaderboard").insert(insert_data)
 
     return '', 204
+
 
 
 # @app.route('/record-time', methods=['POST'])

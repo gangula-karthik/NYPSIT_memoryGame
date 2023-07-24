@@ -81,7 +81,7 @@ body {
 
 .card.flipped .card-inner {
     transform: rotateY(180deg);
-    /* increase the speed of the flip */
+    transition: transform 0.4s ease-in-out;
 }
 
 .card.matched {
