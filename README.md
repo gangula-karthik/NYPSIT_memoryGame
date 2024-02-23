@@ -10,7 +10,7 @@ Play it here: https://nypsit-memorygame.onrender.com
 ## Getting Started:
 1. Clone the repository.
 2. Set up Flask: `pip install flask`
-3. Launch the app: `python app.py`
+3. Launch the app: `python main.py`
 4. Head over to `http://localhost:5000/` and join the celebration! 🥳
 
 ## Star the Repo:
